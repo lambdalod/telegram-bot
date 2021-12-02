@@ -4,10 +4,11 @@ class UserNotFoundException extends Exception {}
 class User {
     private int $id;
     private ?int $telegram_id;
-    private int $phone;
+    private string $phone;
 
-    function __construct(int $telegram_id, bool $createuser = false, ?int $phone_number = NULL) {
+    function __construct(int $telegram_id, bool $createuser = false, ?string $phone_number = NULL) {
         global $sql;
+        if (!is_null($phone_number) && !preg_match("/^[0-9+]+$/", $phone_number)) throw new InvalidArgumentException("Phone number is invalid format!");
         $q = $sql->query("SELECT * FROM users WHERE telegram_id = '$telegram_id'") or die($sql->error);
         if ($q->num_rows != 1) {
             if ($createuser) {
