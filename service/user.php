@@ -54,4 +54,16 @@ class User {
     public function sendNotification(string $text): void {
         API::sendMessage($this->id, $text, 1);
     }
+
+    public function getNewPassword($length = 12): string {
+        global $sql;
+        $q = $sql->query("SELECT hash FROM users WHERE id = '$this->id'");
+        $hash = $q->fetch_row()[0];
+        if (is_null($hash)) {
+            $str = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+            $hash = password_hash($str, PASSWORD_DEFAULT);
+            $sql->query("UPDATE users SET hash = '$hash' WHERE id = '$this->id'");
+            return $str;
+        } else throw new ValueError("Password is already set for user!");
+    }
 }

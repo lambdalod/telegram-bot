@@ -41,7 +41,8 @@ if (isset($update->message)) {
                 API::sendMessage($peer, "Вы не зарегистрированы в системе!");
                 exit;
             }
-            API::sendKeyboardedMessage($peer, "Здравствуйте, {$user->getNameAndPatronymic()}! Это чат-бот Промсвязьбанка для сотрудников. Высылаю Вам логин и пароль для доступа в личный кабинет:\n\nЛогин: {$phone}\nПароль: пароль\n\nРады видеть Вас в компании!\n\nВ случае возникновения трудностей - зайдайте вопрос в этом чате и мы постараемся ответить :)", json_encode(array("remove_keyboard" => true), JSON_UNESCAPED_UNICODE));
+            $password = $user->getNewPassword();
+            API::sendKeyboardedMessage($peer, "Здравствуйте, {$user->getNameAndPatronymic()}! Это чат-бот Промсвязьбанка для сотрудников. Высылаю Вам логин и пароль для доступа в личный кабинет:\n\nЛогин: {$phone}\nПароль: {$password}\n\nРады видеть Вас в компании!\n\nВ случае возникновения трудностей - зайдайте вопрос в этом чате и мы постараемся ответить :)", json_encode(array("remove_keyboard" => true), JSON_UNESCAPED_UNICODE));
         } else {
             $keyboard = array(
                 "resize_keyboard" => true,
