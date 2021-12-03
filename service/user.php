@@ -5,6 +5,8 @@ class User {
     private int $id;
     private ?int $telegram_id;
     private string $phone;
+    private string $name;
+    private ?string $patr;
 
     function __construct(int $telegram_id, bool $createuser = false, ?string $phone_number = NULL) {
         global $sql;
@@ -23,6 +25,18 @@ class User {
         $this->telegram_id = $telegram_id;
         $this->id = $d['id'];
         $this->phone = $d['phone'];
+        $this->name = $d['name'];
+        $this->patr = $d['patronymic'];
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function getNameAndPatronymic(): string {
+        if (is_null($this->patr)) $p = "";
+        else $p = " {$this->patr}";
+        return "{$this->name}{$p}";
     }
 
     public function getID(): int {
