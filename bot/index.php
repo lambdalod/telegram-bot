@@ -34,6 +34,7 @@ if (isset($update->message)) {
                 exit;
             }
             $phone = $contact->phone_number;
+            if (mb_substr($phone, 0, 1) != "+") $phone = "+".$phone;
             try {
                 $user = new User($uid, true, $phone);
             } catch (Exception $e) {
