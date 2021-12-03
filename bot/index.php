@@ -59,4 +59,5 @@ if (isset($update->message)) {
             exit;
         }
     }
+            $addr = $user->getActiveOrder()->getAddressesLimited();
 }
