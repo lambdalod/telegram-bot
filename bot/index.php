@@ -41,7 +41,7 @@ if (isset($update->message)) {
                 API::sendMessage($peer, "Вы не зарегистрированы в системе!");
                 exit;
             }
-            API::sendKeyboardedMessage($peer, "Здравствуйте! Это чат-бот Промсвязьбанка для сотрудников. Высылаю Вам логин и пароль для доступа в личный кабинет:\n\nЛогин: {$phone}\nПароль: пароль\n\nРады видеть Вас в компании!", json_encode(array("remove_keyboard" => true), JSON_UNESCAPED_UNICODE));
+            API::sendKeyboardedMessage($peer, "Здравствуйте, {$user->getNameAndPatronymic()}! Это чат-бот Промсвязьбанка для сотрудников. Высылаю Вам логин и пароль для доступа в личный кабинет:\n\nЛогин: {$phone}\nПароль: пароль\n\nРады видеть Вас в компании!\n\nВ случае возникновения трудностей - зайдайте вопрос в этом чате и мы постараемся ответить :)", json_encode(array("remove_keyboard" => true), JSON_UNESCAPED_UNICODE));
         } else {
             $keyboard = array(
                 "resize_keyboard" => true,
@@ -60,5 +60,10 @@ if (isset($update->message)) {
             exit;
         }
     }
-            $addr = $user->getActiveOrder()->getAddressesLimited();
+    $bca = BotQuestions::checkAnswer(mb_strtolower($text));
+    if (!is_null($bca)) {
+        API::sendMessage($peer, "{$user->getName()}, cпасибо за вопрос!\n\n{$bca}");
+    } else {
+        API::sendMessage($peer, "{$user->getName()}, cпасибо за вопрос! К сожалению, я не понимаю, о чём идёт речь. Ваш вопрос переадресован ментору.");
+    }
 }
